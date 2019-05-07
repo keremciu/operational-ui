@@ -21,19 +21,19 @@ const toggleCheckboxAnimation = keyframes`
 `
 
 // ref: https://codersblock.com/blog/checkbox-trickery-with-css/
-const Input = styled("input")<{ condensed: CheckboxProps["condensed"] }>`
+const Input = styled("input")`
   position: absolute;
   left: -9999px;
 
   :checked + label::after {
     content: "";
     display: block;
-    width: ${({ condensed }) => (condensed ? 3 : 5)}px;
-    height: ${({ condensed }) => (condensed ? 7 : 10)}px;
+    width: 5px;
+    height: 10px;
     position: absolute;
-    left: ${({ condensed }) => (condensed ? 4 : 7)}px;
+    left: 7px;
     margin: 0 auto;
-    top: ${({ condensed }) => (condensed ? 2 : 4)}px;
+    top: 2px;
     transform: rotate(45deg);
     border-right: 2px solid ${props => props.theme.color.primary};
     border-bottom: 2px solid ${props => props.theme.color.primary};
@@ -47,16 +47,18 @@ const Input = styled("input")<{ condensed: CheckboxProps["condensed"] }>`
   }
 `
 
-const Label = styled("label")<{ condensed: CheckboxProps["condensed"] }>`
+const Label = styled("label")`
   position: relative;
   cursor: pointer;
-  height: ${({ condensed }) => (condensed ? 13 : 20)}px;
+  height: 20px;
   display: block;
-  margin-bottom: ${({ theme, condensed }) => (condensed ? 0 : theme.space.small)}px;
-  padding-left: ${({ condensed }) => (condensed ? 19 : 32)}px;
+  margin-bottom: 10px;
+  padding-left: 32px;
   line-height: 20px;
   user-select: none;
-  font-size: ${({ theme, condensed }) => (condensed ? theme.font.size.small : theme.font.size.body)}px;
+
+  font-size: ${props => props.theme.font.size}px;
+  color: ${props => props.theme.color.text.default};
 
   :hover {
     color: ${props => props.theme.color.primary};
@@ -73,8 +75,8 @@ const Label = styled("label")<{ condensed: CheckboxProps["condensed"] }>`
     display: block;
     top: 0;
     left: 0;
-    width: ${({ condensed }) => (condensed ? 12 : 18)}px;
-    height: ${({ condensed }) => (condensed ? 12 : 18)}px;
+    width: 18px;
+    height: 18px;
     border-radius: ${props => props.theme.borderRadius}px;
     background-color: #f2f2f2;
     border: solid 1px #c0c0c0;
@@ -90,17 +92,14 @@ export interface CheckboxProps {
   label: string
   /** Disabled input */
   disabled?: boolean
-  /** Shall we make ourselves smaller? */
-  condensed?: boolean
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({ value, onChange, label, disabled, condensed, ...props }) => {
+const Checkbox: React.FC<CheckboxProps> = ({ value, onChange, label, disabled, ...props }) => {
   const uuid = uniqueId("checkbox_")
 
   return (
     <div style={disabled ? { opacity: 0.6 } : {}}>
       <Input
-        condensed={condensed}
         id={uuid}
         type="checkbox"
         checked={Boolean(value)}
@@ -108,9 +107,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ value, onChange, label, disabled, c
         disabled={disabled}
         {...props}
       />
-      <Label condensed={condensed} htmlFor={uuid}>
-        {label}
-      </Label>
+      <Label htmlFor={uuid}>{label}</Label>
     </div>
   )
 }
